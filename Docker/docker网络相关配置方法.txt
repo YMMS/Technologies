@@ -1,0 +1,47 @@
+ping test.caicloudprivatetest.com成功，却失败docker login test.caicloudprivatetest.com
+
+###################################################################
+
+docker的代理设置(Ubuntu系统)
+
+1. 创建文件夹
+
+sudo mkdir -p /etc/systemd/system/docker.service.d
+
+2. 创建配置文件
+
+sudo vim /etc/systemd/system/docker.service.d/http-proxy.conf
+
+3. 在创建的配置文件中写入如下内容
+
+[Service]
+Environment="HTTP_PROXY=http://10.167.32.133:8080/"
+Environment="HTTPS_PROXY=https:////10.167.32.133:8080/"
+Environment="NO_PROXY=localhost,127.0.0.1,test.caicloudprivatetest.com"
+
+4. 重启守护进程
+
+sudo docker daemonn restart
+
+5. 重启docker服务
+
+Ubuntu 14以及以前：sudo serivce docker restart
+Ubuntu 16以及以后：sudo systemctl restart docker
+
+###################################################################
+
+候选：
+
+1. 在/etc/hosts中添加
+
+10.167.174.137 test.caicloudprivatetest.com
+
+2. 在/etc/default/docker中添加
+
+DOCKER_OPTS="--registry-mirror=http://hub-mirror.c.163.com --dns 10.167.174.13"
+export http_proxy="http://10.167.32.133:8080/"
+export https_proxy="https://10.167.32.133:8080/"
+export no_proxy="localhost,127.0.0.1,test.caicloudprivatetest.com"
+
+
+
